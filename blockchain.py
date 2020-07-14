@@ -37,25 +37,34 @@ def get_user_choice():
 def print_blockchain_elements():
     # print(blockchain)
     for block in blockchain:
-        print('outputting block')
+        print('Outputting Block')
         print(block)
 
 
-# # get second transaction input and add value to blockchain
-# tx_amount = get_user_input()
-# add_value(last_transaction=get_last_blockchain_value(),
-#           transaction_amount=tx_amount)
+def verify_chain():
+    block_index = 0
+    is_valid = True
+    for block in blockchain:
+        if block_index == 0:
+            block_index += 1  # increment from first block
+            continue
+        # check first element of current block equal to the last block
+        elif block[0] == blockchain[block_index - 1]:
+            is_valid = True
 
+        else:
+            is_valid = False
+            break
+        block_index += 1
+    return is_valid
 
-# # get third transaction input and add value to blockchain
-# tx_amount = get_user_input()
-# add_value(tx_amount, get_last_blockchain_value())
 
 while True:
     print('Please choose:')
     print('1: Add new transaction value')
     print('2: Output the blockchain blocks')
     print('q: Quit')
+    print('h: Hack the blockchain')
     user_choice = get_user_choice()
 
     if user_choice == '1':
@@ -67,9 +76,17 @@ while True:
 
     elif user_choice == 'q':
         break
+
+    elif user_choice == 'h':
+        if len(blockchain) >= 1:
+            blockchain[0] = [2]
+
     else:
         print('Invalid value please enter valid value')
     print('Choice registered!')
+    if not verify_chain():
+        print('Invalid blockchain')
+        break
 
 
 print('Done')
